@@ -28,12 +28,19 @@ Project Structure
 
 .
 ├── app.py              # Main Flask application, API routes
+
 ├── claude.py           # Core structural analysis engine (Slope Deflection Method)
+
 ├── templates
+
 │   └── index.html      # Frontend HTML structure
+
 └── static
-    └── js
+
+    └── js   
+    
         └── app.js      # Frontend JavaScript for UI logic and API calls
+└──
 
   - `app.py`: The heart of the backend. It serves the `index.html` page and provides API endpoints for creating a session, adding nodes, members, loads, and triggering the analysis.
   - `claude.py`: Contains all the engineering logic. The `StructureAnalyzer` class models the structure and implements the Slope Deflection Method to compute results.
@@ -59,7 +66,7 @@ It's highly recommended to use a virtual environment to manage project dependenc
 
 ```bash
 # Navigate to your project directory
-cd path/to/your/project
+cd path/to/the/project
 
 # Create a virtual environment
 python -m venv venv
