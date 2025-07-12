@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structural Analysis Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="row bg-dark text-white p-3">
+            <div class="col">
+                <h1>Structural Analysis Tool</h1>
+                <p class="lead">Analyze structures using the Slope Deflection Method</p>
+            </div>
+        </header>
+
+        <main class="row mt-3">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Structure Definition</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- <div class="mb-3">
+                            <label for="exampleSelect" class="form-label">Quick Load Example</label>
+                            <select class="form-select" id="exampleSelect">
+                                <option value="">-- Select Example --</option>
+                                <option value="continuous_beam">Continuous Beam</option>
+                                <option value="portal_frame">Portal Frame</option>
+                            </select>
+                        </div>
+                        
+                        <button id="clearBtn" class="btn btn-warning mb-3">Clear All</button> -->
+                        
+                        <div class="accordion" id="structureAccordion">
+                            <!-- Nodes Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingNodes">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                            data-bs-target="#collapseNodes" aria-expanded="true" aria-controls="collapseNodes">
+                                        Nodes
+                                    </button>
+                                </h2>
+                                <div id="collapseNodes" class="accordion-collapse collapse show" 
+                                     aria-labelledby="headingNodes" data-bs-parent="#structureAccordion">
+                                    <div class="accordion-body">
+                                        <form id="nodeForm">
+                                            <div class="mb-2">
+                                                <label for="nodeName" class="form-label">Name</label>
+                                                <input type="text" class="form-control" id="nodeName" required>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <label for="nodeX" class="form-label">X Coordinate</label>
+                                                    <input type="number" step="any" class="form-control" id="nodeX" required>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="nodeY" class="form-label">Y Coordinate</label>
+                                                    <input type="number" step="any" class="form-control" id="nodeY" required>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2 form-check">
+                                                <input type="checkbox" class="form-check-input" id="isSupport">
+                                                <label class="form-check-label" for="isSupport">Is Support</label>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="supportType" class="form-label">Support Type</label>
+                                                <select class="form-select" id="supportType" disabled>
+                                                    <option value="">None</option>
+                                                    <option value="fixed">Fixed</option>
+                                                    <option value="pinned">Pinned</option>
+                                                    <option value="roller">Roller</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add Node</button>
+                                        </form>
+                                        
+                                        <hr>
+                                        <h6>Defined Nodes</h6>
+                                        <ul id="nodesList" class="list-group list-group-flush">
+                                            <!-- Nodes will be added here dynamically -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Members Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingMembers">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                            data-bs-target="#collapseMembers" aria-expanded="false" aria-controls="collapseMembers">
+                                        Members
+                                    </button>
+                                </h2>
+                                <div id="collapseMembers" class="accordion-collapse collapse" 
+                                     aria-labelledby="headingMembers" data-bs-parent="#structureAccordion">
+                                    <div class="accordion-body">
+                                        <form id="memberForm">
+                                            <div class="mb-2">
+                                                <label for="memberName" class="form-label">Name</label>
+                                                <input type="text" class="form-control" id="memberName" required>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="startNode" class="form-label">Start Node</label>
+                                                <select class="form-select" id="startNode" required>
+                                                    <option value="">-- Select Node --</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="endNode" class="form-label">End Node</label>
+                                                <select class="form-select" id="endNode" required>
+                                                    <option value="">-- Select Node --</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="EI" class="form-label">Flexural Rigidity (EI)</label>
+                                                <input type="number" step="any" class="form-control" id="EI" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add Member</button>
+                                        </form>
+                                        
+                                        <hr>
+                                        <h6>Defined Members</h6>
+                                        <ul id="membersList" class="list-group list-group-flush">
+                                            <!-- Members will be added here dynamically -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Loads Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingLoads">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                            data-bs-target="#collapseLoads" aria-expanded="false" aria-controls="collapseLoads">
+                                        Loads
+                                    </button>
+                                </h2>
+                                <div id="collapseLoads" class="accordion-collapse collapse" 
+                                     aria-labelledby="headingLoads" data-bs-parent="#structureAccordion">
+                                    <div class="accordion-body">
+                                        <form id="loadForm">
+                                            <div class="mb-2">
+                                                <label for="loadMember" class="form-label">Member</label>
+                                                <select class="form-select" id="loadMember" required>
+                                                    <option value="">-- Select Member --</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="loadType" class="form-label">Load Type</label>
+                                                <select class="form-select" id="loadType" required>
+                                                    <option value="uniform">Uniform Load (Full Span)</option>
+                                                    <option value="point">Point Load (Center)</option>
+                                                    <option value="point_x">Point Load (Offset)</option>
+                                                    <option value="double_point">Two Equal Point Loads</option>
+                                                    <option value="half_uniform">Half-span Uniform Load</option>
+                                                    <option value="moment">Applied Moment</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="loadMagnitude" class="form-label">Magnitude</label>
+                                                <input type="number" step="any" class="form-control" id="loadMagnitude" required>
+                                                <small class="form-text text-muted">
+                                                    Units: kN/m for uniform loads, kN for point loads, kNm for moments.
+                                                </small>
+                                            </div>
+                                            <div class="mb-2" id="locationField" style="display: none;">
+                                                <label for="loadLocation" class="form-label">Location</label>
+                                                <input type="number" step="any" class="form-control" id="loadLocation">
+                                                <small class="form-text text-muted">
+                                                    Distance from start node (m). Required for point loads, offset loads, and moments.
+                                                </small>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add Load</button>
+                                        </form>
+                                        
+                                        <hr>
+                                        <h6>Defined Loads</h6>
+                                        <ul id="loadsList" class="list-group list-group-flush">
+                                            <!-- Loads will be added here dynamically -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" id="isLateralCheckbox"> Lateral Load
+                            </label>
+                            <label for="swayCase">Sway Case:</label>
+                            <select id="swayCase">
+                                <option value="1">Basic Sway</option>
+                                <option value="2">Sway with Distributed Loads at Top</option>
+                                <option value="3">Sway with Axial Load at Top</option>
+                                <option value="4">No Sway</option>
+                                <option value="5">Sway with Axial and Distributed Loads</option>
+                            </select>
+                        </div>
+                        <div class="mt-3">
+                            <button id="analyzeBtn" class="btn btn-success btn-lg w-100">Analyze Structure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Visualization</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div id="loadingSpinner" class="spinner-border text-primary d-none" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div id="visualizationContainer">
+                            <img id="visualization" class="img-fluid" src="" alt="Structure visualization">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Analysis Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="resultsContainer">
+                            <div class="alert alert-info">
+                                Define your structure and click "Analyze Structure" to see results.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="row mt-4 p-3 bg-light">
+            <div class="col text-center">
+                <p>&copy; 2025 Structural Analysis Tool</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
